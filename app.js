@@ -1,4 +1,4 @@
-var gameApp = {
+var app = {
 	ctx : function(elem){
 		var canvas = document.getElementById(elem);
 		return canvas.getContext('2d');
@@ -31,7 +31,7 @@ var gameApp = {
 	circleLine: function(ctx, x, y, radius, r, g, b, transparent){
 		ctx.beginPath();
 		ctx.strokeStyle = '#fff';
-		ctx.arc(x, y, radius, 0, Math.PI*2, true);
+		ctx.arc(x, y, radius, 0, Math.PI * 2, true);
 		ctx.closePath();
 		ctx.stroke();
 	},
@@ -40,9 +40,14 @@ var gameApp = {
 		sprite.src = 'images/sprite.png';
 		return sprite;
 	},
-	ang : 0,
-	moving: {
-		left: false,
-		right: false
+	// Pandora
+	pandora: {
+		ang : 0,
+		speed: 0.5,
+		moving: {
+			move: false,
+			left: false,
+			right: true
+		}
 	}
-}
+};
