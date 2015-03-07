@@ -26,31 +26,31 @@ function loop(){
 
 function pandoraRoration(){
 	// Уменшение скорости при ненажатых клавишах, ограничение скорости
-	if(app.pandora.speed >= 0.05 && !app.pandora.moving.move){
-		app.pandora.speed -= 0.007;
+	if(app.pandora.speed > 0.1 && !app.pandora.moving.move){
+		app.pandora.speed -= 0.01;
+	} else if(app.pandora.speed < 0.1 && !app.pandora.moving.move){
+		app.pandora.speed += 0.01;
 	} else if(app.pandora.speed >= 2){
 		app.pandora.speed = 2;
+	} else if(app.pandora.speed <= -2){
+		app.pandora.speed = -2;
 	}
 
 	// Нажата клавиша влево
 	if(app.pandora.moving.move && app.pandora.moving.right){
-		app.pandora.speed += 0.01;
+		app.pandora.speed += 0.04;
 		app.pandora.ang += app.pandora.speed;
 	}
 	// Нажата клавиша вправо
 	if(app.pandora.moving.move && app.pandora.moving.left){
-		app.pandora.speed += 0.01;
-		app.pandora.ang -= app.pandora.speed;
+		app.pandora.speed -= 0.04;
+		app.pandora.ang += app.pandora.speed;
 	}
 
 	// Автоматическое доскроливание при отжатых клавишах
-	if(!app.pandora.moving.move && app.pandora.moving.right){
+	if(!app.pandora.moving.move){
 		app.pandora.ang += app.pandora.speed;
 	}
-	if(!app.pandora.moving.move && app.pandora.moving.left){
-		app.pandora.ang -= app.pandora.speed;
-	}
-
 	rotateImage(app.pandora.ang);
 }
 

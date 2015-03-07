@@ -43,7 +43,7 @@ var app = {
 	// Pandora
 	pandora: {
 		ang : 0,
-		speed: 0.5,
+		speed: 1,
 		moving: {
 			move: false,
 			left: false,
