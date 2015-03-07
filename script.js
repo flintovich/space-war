@@ -37,13 +37,22 @@ function pandoraRoration(){
 	}
 
 	// Нажата клавиша влево
-	if(app.pandora.moving.move && app.pandora.moving.right){
-		app.pandora.speed += 0.04;
+	if(app.pandora.moving.move && app.pandora.moving.right) {
+		if (app.pandora.speed < 0.1){
+			app.pandora.speed += 0.07;
+		} else {
+			app.pandora.speed += 0.02;
+		}
 		app.pandora.ang += app.pandora.speed;
 	}
 	// Нажата клавиша вправо
 	if(app.pandora.moving.move && app.pandora.moving.left){
-		app.pandora.speed -= 0.04;
+		if (app.pandora.speed > 0.1){
+			app.pandora.speed -= 0.07;
+		} else {
+			app.pandora.speed -= 0.02;
+		}
+
 		app.pandora.ang += app.pandora.speed;
 	}
 
