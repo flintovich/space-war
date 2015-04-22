@@ -35,6 +35,13 @@ var app = {
 		ctx.closePath();
 		ctx.stroke();
 	},
+	line: function(ctx, x1, y1, x2, y2){
+		ctx.beginPath();
+		ctx.strokeStyle = '#fff';
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
+	},
 	sprite : function(){
 		var sprite = new Image();
 		sprite.src = 'images/sprite.png';
@@ -48,6 +55,8 @@ var app = {
 			move: false,
 			left: false,
 			right: true
-		}
+		},
+		x: 0,
+		y: 0
 	}
 };

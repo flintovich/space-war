@@ -21,10 +21,10 @@ window.requestAnimFrame = (function(){
 })();
 
 function loop(){
-	pandoraRoration();
+	pandoraRotation();
 }
 
-function pandoraRoration(){
+function pandoraRotation(){
 	// Уменшение скорости при ненажатых клавишах, ограничение скорости
 	if(app.pandora.speed > 0.1 && !app.pandora.moving.move){
 		app.pandora.speed -= 0.01;
@@ -78,9 +78,6 @@ function rotateImage(angle){
 		// regular rotation about a point
 		var angle = ang * Math.PI / 180; // 124 degrees angle of rotation in radians
 		var rx = innerWidth / 2, ry = innerHeight / 2; // the rotation x and y
-		var px = 300, py = innerHeight - 64; // the objects center x and y
-		var radius = ry - py; // the difference in y positions or the radius
-
 		var dx = rx + (rx - 64) * Math.sin(angle); // the draw x
 		var dy = ry - (ry - 64) * Math.cos(angle) ; // the draw y
 
@@ -90,6 +87,8 @@ function rotateImage(angle){
 		game.translate(-dx, -dy);
 		game.drawImage(myImage, dx - myImage.width / 2, dy - myImage.height / 2);
 		game.restore();
+		app.pandora.x = dx;
+		app.pandora.y = dy;
 	};
 	myImage.src = 'images/pandora.png';
 }
@@ -112,7 +111,6 @@ function initCreateStars(){
 	texture.canvas.width = widthTexture;
 	texture.canvas.height = heightTexture;
 
-
 	createStars(500);
 	function createStars(amount){
 		for(var i = 0; i < amount; i++){
@@ -121,57 +119,84 @@ function initCreateStars(){
 	}
 }
 
+function startFire(ctx, x1, y1, x2, y2){
+	var x1 = x1;
+	var x2 = x2;
+	moveFire();
+	function moveFire(){
+		if(x2 > x1){
+			if(x1 <= x2){
+				app.pandora.x = app.pandora.x + 10;
+				x1 = app.pandora.x;
+				app.circle(ctx, app.pandora.x, y1, 4, 204, 0, 0, 99);
+				moveFire();
+			}
+		}
+		//app.circle(ctx, x1, y1, 4, 204, 0, 0, 99);
+	}
+}
+
 function initKeyEvents(){
+	var game = app.ctx('game');
+	var texture = app.ctx('texture');
+
 	document.onkeydown = function(e){
-		var keycode;
+		var keyCode;
 		if(window.event) {
-			keycode = window.event.keyCode;
+			keyCode = window.event.keyCode;
 		} else if(e){
-			keycode = e.which;
+			keyCode = e.which;
 		}
 
-		// car speed
-		if(keycode == 38){
-			//alert(1);
-		} else if(keycode == 40){
+		switch (keyCode){
+			// turn pandora
+			case 37:
+				app.pandora.moving.left = false;
+				app.pandora.moving.right = true;
 
-		}
-		// turn car
-		if(keycode == 37){
-			app.pandora.moving.left = false;
-			app.pandora.moving.right = true;
+				app.pandora.moving.move = true;
+				break;
+			// turn pandora
+			case 39:
+				app.pandora.moving.right = false;
+				app.pandora.moving.left = true;
 
-			app.pandora.moving.move = true;
-		}
-		if(keycode == 39){
-			app.pandora.moving.right = false;
-			app.pandora.moving.left = true;
+				app.pandora.moving.move = true;
+				break;
+			case 32:
+				// fire
 
-			app.pandora.moving.move = true;
+				var h = innerHeight;
+				var width = innerWidth;
+				var x1 = app.pandora.x;
+				var y1 = app.pandora.y;
+				var x2 = width - x1;
+				var y2 = h - y1;
+
+				//app.circle(texture, x1, y1, 4, 204, 0, 0, 99);
+				//app.line(texture, x1, y1, x2, y2);
+				startFire(texture, x1, y1, x2, y2);
+				break;
 		}
 	};
 
 	document.onkeyup = function(e){
-		var keycode;
+		var keyCode;
 		if (window.event) {
-			keycode = window.event.keyCode;
+			keyCode = window.event.keyCode;
 		} else if(e){
-			keycode = e.which;
+			keyCode = e.which;
 		}
 
-		// speed up
-		if(keycode == 38){
-		}
-		// speed down
-		if(keycode == 40){
-		}
-		// turn left stop
-		if(keycode == 37){
-			app.pandora.moving.move = false;
-		}
-		// turn right stop
-		if(keycode == 39){
-			app.pandora.moving.move = false;
+		switch (keyCode){
+			// turn left stop
+			case 37:
+				app.pandora.moving.move = false;
+				break;
+			// turn right stop
+			case 39:
+				app.pandora.moving.move = false;
+				break;
 		}
 	};
 }
